@@ -14,6 +14,7 @@ namespace Order
     public partial class Seller : Form
     {
         private Login loginFormInstance = new Login();
+        private const string connectionString = "Data Source=DESKTOP-09BJIA6\\SQLEXPRESS;Initial Catalog=Final;Integrated Security=True;";
         public Seller()
         {
             InitializeComponent();
@@ -24,8 +25,21 @@ namespace Order
             // Fetch and display data in DataGridView
             FetchAndDisplayData();
             FetchAndDisplayOrderData();
-            guna2HtmlLabel4.Text = "Howdy,"+loginFormInstance.GetLoggedInUsername()+"!";
-            //guna2Panel1.Controls.Add(guna2HtmlLabel2);
+            // Set the text for guna2HtmlLabel4
+            string labelText = "Howdy, " + loginFormInstance.GetLoggedInUsername() + "!";
+            guna2HtmlLabel4.Text = labelText;
+
+            // Calculate the width of the label's text
+            using (Graphics g = CreateGraphics())
+            {
+                SizeF textSize = g.MeasureString(labelText, guna2HtmlLabel4.Font);
+
+                // Calculate the X position to center the label
+                int xPosition = (guna2Panel6.Width - (int)textSize.Width) / 2;
+
+                // Set the location of the label to center it
+                guna2HtmlLabel4.Location = new Point(xPosition, guna2HtmlLabel4.Location.Y);
+            }
         }
 
         private void FetchAndDisplayData()
@@ -35,8 +49,6 @@ namespace Order
                 // Create a DataTable to store the fetched data
                 DataTable foodItemsTable = new DataTable();
 
-                // Your connection string - Update this with your actual connection string
-                string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -71,15 +83,13 @@ namespace Order
                 // Create a DataTable to store the fetched data
                 DataTable ordersTable = new DataTable();
 
-                // Your connection string - Update this with your actual connection string
-                string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
                     // SQL query to fetch data from Orders table
-                    string query = "SELECT OrderID, UserName, FoodName, Quantity, Price FROM Orders";
+                    string query = "SELECT OrderID, UserName, FoodName, Quantity, Price FROM Receipt";
 
                     // Use SqlDataAdapter to fill the DataTable
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
@@ -104,18 +114,39 @@ namespace Order
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            guna2HtmlLabel1.Visible = true;
+            //guna2HtmlLabel1.Visible = true;
             guna2DataGridView.Visible = true;
-            guna2HtmlLabel3.Visible = false;
+           // guna2HtmlLabel3.Visible = false;
             guna2DataGridView1.Visible = false;
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
         {
-            guna2HtmlLabel3.Visible = true;
+           // guna2HtmlLabel3.Visible = true;
             guna2DataGridView1.Visible = true;
-            guna2HtmlLabel1.Visible = false;
+           // guna2HtmlLabel1.Visible = false;
             guna2DataGridView.Visible = false;
+        }
+
+        private void guna2Button3_Click(object sender, EventArgs e)
+        {
+            loginFormInstance.Show();
+            this.Dispose();
+        }
+
+        private void guna2Button6_Click(object sender, EventArgs e)
+        {
+            if (guna2Panel5.Size == new Size(200, 373))
+            {
+                guna2Panel5.Size = new Size(26, 373); 
+                this.Size = new Size(698, 412);
+            }
+            else
+            {
+
+                guna2Panel5.Size = new Size(200, 373); // full panel size
+                this.Size = new Size(908, 412); // full form size
+            }
         }
     }
 }

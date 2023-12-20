@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +16,17 @@ namespace Order
     public partial class User : Form
     {
       
-        private bool isBelowButtonClicked = false;
         private Login loginFormInstance = new Login();
         private decimal totalOrderPrice = 0;
         private Dictionary<string, int> foodPrices;
+        private const string connectionString = "Data Source=DESKTOP-09BJIA6\\SQLEXPRESS;Initial Catalog=Final;Integrated Security=True;";
 
 
         public User()
         {
             InitializeComponent();
             InitializeFoodPrices();
+            
         }
         private void InitializeFoodPrices()
         {
@@ -36,55 +38,20 @@ namespace Order
                 { label7.Text, 60 },
                 { label9.Text, 130 },
                 { label11.Text, 50 },
+                { label21.Text, 165 },
+                { label23.Text, 199 },
+                { label20.Text, 235 },
+                { label13.Text, 456 },
                 // Add more food items as needed
             };
         }
 
-        private void btnAbove_Click(object sender, EventArgs e)
-        {
-            if (!isBelowButtonClicked)
-            {
-                // Adjust the Top property to move PictureBox2 up
-                pictureBox2.Top -= 20;  // You can adjust the value based on your layout
+        
 
-                // Hide PictureBox1
-                pictureBox1.Visible = false;
-
-                // Disable the "Above" button
-                btnAbove.Enabled = false;
-
-                // Enable the "Below" button
-                btnBelow.Enabled = true;
-
-                // Update the state
-                isBelowButtonClicked = true;
-            }
-        }
-
-        private void btnBelow_Click(object sender, EventArgs e)
-        {
-            if (isBelowButtonClicked)
-            {
-                // Show PictureBox1
-                pictureBox1.Visible = true;
-
-                // Adjust the Top property to move PictureBox2 down
-                pictureBox2.Top += 20;  // You can adjust the value based on your layout
-
-                // Enable the "Above" button
-                btnAbove.Enabled = true;
-
-                // Disable the "Below" button
-                btnBelow.Enabled = false;
-
-                // Update the state
-                isBelowButtonClicked = false;
-            }
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void pictureComboMeal_Click(object sender, EventArgs e)
         {
             guna2GroupBox1.Visible = true;
+            guna2GroupBox2.Visible = false;
         }
 
         private void guna2Button1_Click(object sender, EventArgs e)
@@ -94,18 +61,23 @@ namespace Order
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-           
+            testButton.Visible = true;
+            guna2Button2.Visible = false;
+            guna2Button3.Visible = false;
+            guna2Button8.Visible = false;
+            guna2Button10.Visible = false;
+            guna2Button12.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
         }
 
         private void testButton_Click(object sender, EventArgs e)
         {
             guna2Panel1.Visible = true;
-        }
-
-
-        private void pictureBox3_DoubleClick(object sender, EventArgs e)
-        {
-            testButton.Visible = true;
         }
 
         private void guna2Button1_Click_1(object sender, EventArgs e)
@@ -118,35 +90,34 @@ namespace Order
                     string foodName = label1.Text;
                     int quantity = int.Parse(guna2ComboBox1.SelectedItem.ToString());
                     int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label1.Text, int.Parse(guna2ComboBox1.SelectedItem.ToString()));
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
                     testButton.Visible = false;
                     guna2Panel1.Visible = false;
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (orderProcessed)
                     {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
+                            connection.Open();
 
-                            command.ExecuteNonQuery();
-                       
-                            if (orderProcessed)
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
                             {
-                               
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
                             }
                         }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
                     }
-                        
+
                 }
                 else
                 {
@@ -174,33 +145,32 @@ namespace Order
                     string foodName = label3.Text;
                     int quantity = int.Parse(guna2ComboBox2.SelectedItem.ToString());
                     int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label3.Text, int.Parse(guna2ComboBox2.SelectedItem.ToString()));
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
                     guna2Button2.Visible = false;
                     guna2Panel2.Visible = false;
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (orderProcessed)
                     {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
+                            connection.Open();
 
-                            command.ExecuteNonQuery();
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
 
-                            if (orderProcessed)
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
                             {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
 
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                                command.ExecuteNonQuery();
+
+
                             }
                         }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
                     }
 
                 }
@@ -223,6 +193,17 @@ namespace Order
         private void pictureBox4_Click(object sender, EventArgs e)
         {
             guna2Button2.Visible = true;
+            testButton.Visible = false;
+            guna2Button3.Visible = false;
+            guna2Button8.Visible = false;
+            guna2Button10.Visible = false;
+            guna2Button12.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
         }
 
         private void pictureBox6_Click(object sender, EventArgs e)
@@ -239,9 +220,6 @@ namespace Order
         private List<OrderItem> GetOrderItemsFromDatabase(string username)
         {
             List<OrderItem> orderItems = new List<OrderItem>();
-
-            // Connection string
-            string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -291,7 +269,7 @@ namespace Order
                 // Create labels to display order information
                 Label lblOrder = new Label();
               //  lblOrder.Text = $"{orderItem.UserName} ordered {orderItem.Quantity} {orderItem.FoodName} for {orderItem.Price:C}";
-                lblOrder.Text = $"{orderItem.FoodName} x {orderItem.Quantity}";
+                lblOrder.Text = $"{orderItem.FoodName} x {orderItem.Quantity} qty = {orderItem.Price}";
                // lblOrder.Location = new Point(20, yOffset);
                 lblOrder.AutoSize = true;
                 lblOrder.Font = new Font("Courier New", 12, FontStyle.Bold);
@@ -362,60 +340,114 @@ namespace Order
         private void guna2Button6_Click(object sender, EventArgs e)
         {
             // Get the username for whom orders should be deleted
-            string usernameToDelete = loginFormInstance.GetLoggedInUsername();
+            string username = loginFormInstance.GetLoggedInUsername();
 
-            if (string.IsNullOrEmpty(usernameToDelete))
+            if (string.IsNullOrEmpty(username))
             {
                 MessageBox.Show("Username is null. Cannot proceed with the deletion.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Connection string
-            string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // DELETE query to remove orders for the specific user
-                string deleteQuery = "DELETE FROM Orders WHERE UserName = @UserName";
+                // Check if there are orders for the user
+                bool ordersExist = CheckIfOrdersExist(username, connection);
 
-                using (SqlCommand command = new SqlCommand(deleteQuery, connection))
+                if (!ordersExist)
                 {
-                    command.Parameters.AddWithValue("@UserName", usernameToDelete);
+                    MessageBox.Show($"Order first before placing order.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return; // Exit the method if no orders are found
+                }
 
-                    // Execute the DELETE query
-                    int rowsAffected = command.ExecuteNonQuery();
+                List<(string FoodName, int Quantity, decimal Price)> orderDetails = GetOrderDetailsForUser(username);
+                MarkOrderAsPending(username, orderDetails);
+                PrintOrderDetails(orderDetails);
 
-                    if (rowsAffected > 0)
+                // Begin a SQL transaction
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+
+                    try
                     {
-                        MessageBox.Show($"Orders for {usernameToDelete} deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Step 1: Move data from Orders to Receipt
+                        string moveDataQuery = "INSERT INTO Receipt (UserName, FoodName, Quantity, Price) " +
+                                               "SELECT UserName, FoodName, Quantity, Price FROM Orders WHERE UserName = @UserName";
+                        using (SqlCommand moveDataCommand = new SqlCommand(moveDataQuery, connection, transaction))
+                        {
+                            moveDataCommand.Parameters.AddWithValue("@UserName", username);
+                            moveDataCommand.ExecuteNonQuery();
+                        }
+
+                        // Step 2: Delete data from Orders
+                        string deleteQuery = "DELETE FROM Orders WHERE UserName = @UserName";
+                        using (SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection, transaction))
+                        {
+                            deleteCommand.Parameters.AddWithValue("@UserName", username);
+                            deleteCommand.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction if both steps are successful
+                        transaction.Commit();
+
+                        
+                        //Hides the panel
                         guna2Panel4.Visible = false;
-                        // Refresh the displayed order items
-                        // List<OrderItem> orderItems = GetOrderItemsFromDatabase();
-                        //  DisplayOrderItems(orderItems);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show($"No orders found for {usernameToDelete}.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // An error occurred, rollback the transaction
+                        transaction.Rollback();
+                        MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-        }
 
+        }
+        private bool CheckIfOrdersExist(string username, SqlConnection connection)
+        {
+            string checkQuery = "SELECT COUNT(*) FROM Orders WHERE UserName = @UserName";
+            using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@UserName", username);
+                int orderCount = (int)checkCommand.ExecuteScalar();
+                return orderCount > 0;
+            }
+        }
+        //guna2Panel4.Visible = false;
         private void pictureBox5_Click(object sender, EventArgs e)
         {
             guna2Button3.Visible = true;
+            guna2Button2.Visible = false;
+            testButton.Visible = false;
+            guna2Button8.Visible = false;
+            guna2Button10.Visible = false;
+            guna2Button12.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
+
         }
 
-        private void pictureBox7_Click(object sender, EventArgs e)
-        {
-            guna2Button8.Visible = true;
-        }
 
         private void pictureBox8_Click(object sender, EventArgs e)
         {
             guna2Button10.Visible = true;
+            guna2Button8.Visible = false;
+            guna2Button3.Visible = false;
+            guna2Button2.Visible = false;
+            testButton.Visible = false;
+            guna2Button12.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
         }
 
         private void guna2Button12_Click(object sender, EventArgs e)
@@ -433,33 +465,32 @@ namespace Order
                     string foodName = label6.Text;
                     int quantity = int.Parse(guna2ComboBox3.SelectedItem.ToString());
                     int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label6.Text, int.Parse(guna2ComboBox3.SelectedItem.ToString()));
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
                     guna2Button3.Visible = false;
                     guna2Panel3.Visible = false;
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (orderProcessed)
                     {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
+                            connection.Open();
 
-                            command.ExecuteNonQuery();
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
 
-                            if (orderProcessed)
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
                             {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
 
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                                command.ExecuteNonQuery();
+
+
                             }
                         }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
                     }
 
                 }
@@ -482,68 +513,24 @@ namespace Order
         private void pictureBox9_Click(object sender, EventArgs e)
         {
             guna2Button12.Visible = true;
+            guna2Button10.Visible = false;
+            guna2Button8.Visible = false;
+            guna2Button3.Visible = false;
+            guna2Button2.Visible = false;
+            testButton.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
         }
-
-        private void guna2Button8_Click(object sender, EventArgs e)
-        {
-            guna2Panel5.Visible = true;
-        }
-
         private void guna2Button10_Click(object sender, EventArgs e)
         {
             guna2Panel6.Visible = true;
         }
 
-        private void guna2Button7_Click(object sender, EventArgs e)
-        {
-            if (loginFormInstance != null)
-            {
-                string username = loginFormInstance.GetLoggedInUsername();
-                if (username != null)
-                {
-                    string foodName = label7.Text;
-                    int quantity = int.Parse(guna2ComboBox4.SelectedItem.ToString());
-                    int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label7.Text, int.Parse(guna2ComboBox4.SelectedItem.ToString()));
-                    guna2Button8.Visible = false;
-                    guna2Panel5.Visible = false;
-
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                        {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
-
-                            command.ExecuteNonQuery();
-
-                            if (orderProcessed)
-                            {
-
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
-                            }
-                        }
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+      
 
         private void guna2Button9_Click(object sender, EventArgs e)
         {
@@ -555,33 +542,32 @@ namespace Order
                     string foodName = label9.Text;
                     int quantity = int.Parse(guna2ComboBox5.SelectedItem.ToString());
                     int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label9.Text, int.Parse(guna2ComboBox5.SelectedItem.ToString()));
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
                     guna2Button10.Visible = false;
                     guna2Panel6.Visible = false;
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (orderProcessed)
                     {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
+                            connection.Open();
 
-                            command.ExecuteNonQuery();
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
 
-                            if (orderProcessed)
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
                             {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
 
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                                command.ExecuteNonQuery();
+
+
                             }
                         }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
                     }
 
                 }
@@ -606,33 +592,32 @@ namespace Order
                     string foodName = label11.Text;
                     int quantity = int.Parse(guna2ComboBox6.SelectedItem.ToString());
                     int price = foodPrices[foodName] * quantity;
-                    string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-                    bool orderProcessed = ProcessOrder(label11.Text, int.Parse(guna2ComboBox6.SelectedItem.ToString()));
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
                     guna2Button12.Visible = false;
                     guna2Panel7.Visible = false;
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    if (orderProcessed)
                     {
-                        connection.Open();
-
-                        string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
-
-                        using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                        using (SqlConnection connection = new SqlConnection(connectionString))
                         {
-                            // Ensure @UserName is supplied with a value
-                            command.Parameters.AddWithValue("@UserName", username);
-                            command.Parameters.AddWithValue("@FoodName", foodName);
-                            command.Parameters.AddWithValue("@Quantity", quantity);
-                            command.Parameters.AddWithValue("@Price", price);
+                            connection.Open();
 
-                            command.ExecuteNonQuery();
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
 
-                            if (orderProcessed)
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
                             {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
 
-                                MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                                command.ExecuteNonQuery();
+
+
                             }
                         }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
                     }
 
                 }
@@ -654,13 +639,9 @@ namespace Order
 
         private bool ProcessOrder(string foodName, int quantity)
         {
-            // Check if there's enough quantity available
+            
             if (IsQuantityAvailable(foodName, quantity))
             {
-                // Proceed with the order processing logic
-                // ...
-
-                // Update the quantity available in the database
                 UpdateQuantityAvailable(foodName, quantity);
 
                 return true;
@@ -676,6 +657,7 @@ namespace Order
         {
             // Retrieve the current quantity available from the database
             int currentQuantity = GetQuantityAvailableFromDatabase(foodName);
+ 
 
             // Check if there's enough quantity available
             return currentQuantity >= quantity;
@@ -685,45 +667,48 @@ namespace Order
         {
             int quantityAvailable = 0;
 
-            // Connection string
-            string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-
             // SQL query to retrieve quantity available for the specified food item
             string selectQuery = "SELECT QuantityAvailable FROM FoodItems WHERE FoodName = @FoodName";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand(selectQuery, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    // Add parameter to the command
-                    command.Parameters.AddWithValue("@FoodName", foodName);
+                    connection.Open();
 
-                    // Execute the query
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlCommand command = new SqlCommand(selectQuery, connection))
                     {
-                        // Check if there are rows returned
-                        if (reader.Read())
+                        // Add parameter to the command
+                        command.Parameters.AddWithValue("@FoodName", foodName);
+
+                        // Execute the query
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            // Read the quantity available from the reader
-                            quantityAvailable = Convert.ToInt32(reader["QuantityAvailable"]);
+                            // Check if there are rows returned
+                            if (reader.Read())
+                            {
+                                // Read the quantity available from the reader
+                                quantityAvailable = Convert.ToInt32(reader["QuantityAvailable"]);
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                // Log or display the exception details
+                MessageBox.Show($"Error retrieving quantity: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return Math.Max(0, quantityAvailable);
         }
 
 
+
         private void UpdateQuantityAvailable(string foodName, int quantity)
         {
             try
             {
-                // Connection string
-                string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
-
                 // SQL query to update quantity available for the specified food item
                 string updateQuery = "UPDATE FoodItems SET QuantityAvailable = QuantityAvailable - @Quantity WHERE FoodName = @FoodName";
 
@@ -748,9 +733,527 @@ namespace Order
                 MessageBox.Show($"Error updating quantity: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void MarkOrderAsPending(string userName, List<(string FoodName, int Quantity, decimal Price)> orderDetails, string orderStatus = "Pending")
+        {
+            try
+            {
+                // Concatenate order details into a single string
+                string concatenatedOrderDetails = string.Join(", ", orderDetails.Select(item =>
+                    $"{item.Quantity} {item.FoodName} (₱{item.Price.ToString("0.00")})"
+                ));
 
-    
+                // Calculate total price
+                decimal totalPrice = orderDetails.Sum(item => (item.Quantity * foodPrices[item.FoodName]) + 50);
+                // SQL query to insert into Delivered table
+                string insertQuery = "INSERT INTO OrderInformation (UserName, OrderDetails, TotalPrice, OrderStatus) VALUES (@UserName, @OrderDetails, @TotalPrice, @OrderStatus)";
 
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                    {
+                        // Add parameters to the command
+                        command.Parameters.AddWithValue("@UserName", userName);
+                        command.Parameters.AddWithValue("@OrderDetails", concatenatedOrderDetails);
+                        command.Parameters.AddWithValue("@TotalPrice", totalPrice);
+                        command.Parameters.AddWithValue("@OrderStatus", orderStatus);
+
+                        // Execute the query
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or display the exception details
+                MessageBox.Show($"Error marking order as delivered: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private List<(string FoodName, int Quantity, decimal Price)> GetOrderDetailsForUser(string username)
+        {
+            List<(string FoodName, int Quantity, decimal Price)> orderDetails = new List<(string FoodName, int Quantity, decimal Price)>();
+
+            try
+            {
+                // SQL query to retrieve order details for the specific user
+                string selectQuery = "SELECT FoodName, Quantity, Price FROM Orders WHERE UserName = @UserName";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(selectQuery, connection))
+                    {
+                        // Add parameter to the command
+                        command.Parameters.AddWithValue("@UserName", username);
+
+                        // Execute the query
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Read order details from the reader and add them to the list
+                                string foodName = reader["FoodName"].ToString();
+                                int quantity = Convert.ToInt32(reader["Quantity"]);
+                                decimal price = Convert.ToDecimal(reader["Price"]);
+
+                                orderDetails.Add((foodName, quantity, price));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or display the exception details
+                MessageBox.Show($"Error retrieving order details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return orderDetails;
+        }
+
+        private void guna2Button8_Click_1(object sender, EventArgs e)
+        {
+            guna2Panel5.Visible = true;
+        }
+
+        private void guna2Button7_Click_1(object sender, EventArgs e)
+        {
+            if (loginFormInstance != null)
+            {
+                string username = loginFormInstance.GetLoggedInUsername();
+                if (username != null)
+                {
+                    string foodName = label7.Text;
+                    int quantity = int.Parse(guna2ComboBox4.SelectedItem.ToString());
+                    int price = foodPrices[foodName] * quantity;
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
+                    guna2Button8.Visible = false;
+                    guna2Panel5.Visible = false;
+
+                    if (orderProcessed)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                            {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
+                            }
+                        }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                    }
+                    
+
+                }
+                else
+                {
+                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void pictureBox7_Click_1(object sender, EventArgs e)
+        {
+            guna2Button8.Visible = true;
+            guna2Button3.Visible = false;
+            guna2Button2.Visible = false;
+            testButton.Visible = false;
+            guna2Button10.Visible = false;
+            guna2Button12.Visible = false;
+            guna2Panel1.Visible = false;
+            guna2Panel2.Visible = false;
+            guna2Panel3.Visible = false;
+            guna2Panel5.Visible = false;
+            guna2Panel6.Visible = false;
+            guna2Panel7.Visible = false;
+        }
+
+        private void User_Load(object sender, EventArgs e)
+        {
+            guna2HtmlLabel5.Text = "Howdy," + loginFormInstance.GetLoggedInUsername() + "!";
+        }
+
+        private void guna2Button14_Click(object sender, EventArgs e)
+        {
+            loginFormInstance.Show();
+            this.Dispose();
+        }
+
+        private void pictureBox13_Click(object sender, EventArgs e)
+        {
+            guna2Button26.Visible = true;
+            guna2Button24.Visible = false;
+            guna2Button23.Visible = false;
+            guna2Button16.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel15.Visible = false;
+            guna2Panel14.Visible = false;
+            guna2Panel11.Visible = false;
+
+        }
+
+        private void guna2Button26_Click(object sender, EventArgs e)
+        {
+            guna2Panel16.Visible = true;
+        }
+
+        private void guna2Button25_Click(object sender, EventArgs e)
+        {
+            if (loginFormInstance != null)
+            {
+                string username = loginFormInstance.GetLoggedInUsername();
+                if (username != null)
+                {
+                    string foodName = label21.Text;
+                    int quantity = int.Parse(guna2ComboBox12.SelectedItem.ToString());
+                    int price = foodPrices[foodName] * quantity;
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
+                    guna2Button26.Visible = false;
+                    guna2Panel16.Visible = false;
+
+                    if (orderProcessed)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                            {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
+                            }
+                        }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void pictureFamilyMeal_Click(object sender, EventArgs e)
+        {
+            guna2GroupBox1.Visible = false;
+            guna2GroupBox2.Visible = true;
+        }
+
+        private void guna2Button22_Click(object sender, EventArgs e)
+        {
+            if (loginFormInstance != null)
+            {
+                string username = loginFormInstance.GetLoggedInUsername();
+                if (username != null)
+                {
+                    string foodName = label23.Text;
+                    int quantity = int.Parse(guna2ComboBox11.SelectedItem.ToString());
+                    int price = foodPrices[foodName] * quantity;
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
+                    guna2Button24.Visible = false;
+                    guna2Panel15.Visible = false;
+
+                    if (orderProcessed)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                            {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
+                            }
+                        }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void pictureBox15_Click(object sender, EventArgs e)
+        {
+            guna2Button24.Visible = true;
+            guna2Button26.Visible = false;
+            guna2Button23.Visible = false;
+            guna2Button16.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel15.Visible = false;
+            guna2Panel14.Visible = false;
+            guna2Panel11.Visible = false;
+        }
+
+        private void guna2Button24_Click(object sender, EventArgs e)
+        {
+            guna2Panel15.Visible = true;
+
+        }
+
+        private void pictureBox14_Click(object sender, EventArgs e)
+        {
+            guna2Button23.Visible = true;
+            guna2Button26.Visible = false;
+            guna2Button24.Visible = false;
+            guna2Button16.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel16.Visible = false;
+        }
+
+        private void guna2Button23_Click(object sender, EventArgs e)
+        {
+            guna2Panel14.Visible = true;
+        }
+
+        private void guna2Button21_Click(object sender, EventArgs e)
+        {
+            if (loginFormInstance != null)
+            {
+                string username = loginFormInstance.GetLoggedInUsername();
+                if (username != null)
+                {
+                    string foodName = label20.Text;
+                    int quantity = int.Parse(guna2ComboBox10.SelectedItem.ToString());
+                    int price = foodPrices[foodName] * quantity;
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
+                    guna2Button23.Visible = false;
+                    guna2Panel14.Visible = false;
+
+                    if (orderProcessed)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                            {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
+                            }
+                        }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void pictureBox10_Click(object sender, EventArgs e)
+        {
+            guna2Button16.Visible = true;
+            guna2Button26.Visible = false;
+            guna2Button24.Visible = false;
+            guna2Button23.Visible = false;
+            guna2Panel16.Visible = false;
+            guna2Panel15.Visible = false;
+            guna2Panel14.Visible = false;
+            guna2Panel11.Visible = false;
+        }
+
+        private void guna2Button16_Click(object sender, EventArgs e)
+        {
+            guna2Panel11.Visible = true;
+        }
+
+        private void guna2Button15_Click(object sender, EventArgs e)
+        {
+            if (loginFormInstance != null)
+            {
+                string username = loginFormInstance.GetLoggedInUsername();
+                if (username != null)
+                {
+                    string foodName = label13.Text;
+                    int quantity = int.Parse(guna2ComboBox7.SelectedItem.ToString());
+                    int price = foodPrices[foodName] * quantity;
+                    bool orderProcessed = ProcessOrder(foodName, quantity);
+                    guna2Button16.Visible = false;
+                    guna2Panel11.Visible = false;
+
+                    if (orderProcessed)
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            string insertQuery = "INSERT INTO Orders (UserName, FoodName, Quantity, Price) VALUES (@UserName, @FoodName, @Quantity, @Price)";
+
+                            using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                            {
+                                // Ensure @UserName is supplied with a value
+                                command.Parameters.AddWithValue("@UserName", username);
+                                command.Parameters.AddWithValue("@FoodName", foodName);
+                                command.Parameters.AddWithValue("@Quantity", quantity);
+                                command.Parameters.AddWithValue("@Price", price);
+
+                                command.ExecuteNonQuery();
+
+
+                            }
+                        }
+                        MessageBox.Show($"You ordered {quantity} {foodName}, it cost {price}.");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Username is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("LoginFormInstance is null. Cannot proceed with the order.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void PrintOrderDetails(List<(string FoodName, int Quantity, decimal Price)> orderDetails)
+        {
+            // Create a PrintDocument object
+            PrintDocument printDocument = new PrintDocument();
+            printDocument.PrintPage += (s, ev) => PrintPageHandler(s, ev, orderDetails);
+
+            // Display the PrintDialog to choose the printer and set other print options
+            PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = printDocument;
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Print the document
+                printDocument.Print();
+            }
+        }
+
+        private void PrintPageHandler(object sender, PrintPageEventArgs e, List<(string FoodName, int Quantity, decimal Price)> orderDetails)
+        {
+            // Business name
+            string businessName = "Foodielivery";
+
+            // Create Fonts for printing
+            using (Font fontBusinessName = new Font("Arial", 15, FontStyle.Bold))
+            using (Font fontDetails = new Font("Arial", 15))
+            using (Font fontTotal = new Font("Arial", 20, FontStyle.Bold))
+            {
+                // Specify the printing area
+                RectangleF area = e.PageSettings.PrintableArea;
+
+                // Set initial positions
+                float xPosition = area.X + 10; // Add some left margin
+                float yPosition = area.Y + 10; // Add some top margin
+
+                // Print business name in the upper left
+                e.Graphics.DrawString(businessName, fontBusinessName, Brushes.Black, xPosition, yPosition);
+
+                // Move to the next line
+                yPosition += fontBusinessName.GetHeight() + 100; // Add some space after business name
+
+                // Create a StringBuilder to concatenate the order details
+                StringBuilder orderDetailsStringBuilder = new StringBuilder();
+
+                // Add order details
+                foreach (var detail in orderDetails)
+                {
+                    orderDetailsStringBuilder.AppendLine($"Food Name: {detail.FoodName}, Quantity: {detail.Quantity}, Price: ₱{detail.Price:N2}");
+                }
+
+                // Add Delivery Fee
+                orderDetailsStringBuilder.AppendLine("Delivery Fee: ₱50");
+
+                // Add Total Price
+                decimal totalOrderPrice = orderDetails.Sum(detail => detail.Price) + 50;
+
+                // Print order details below business name
+                e.Graphics.DrawString(orderDetailsStringBuilder.ToString(), fontDetails, Brushes.Black, xPosition, yPosition);
+
+                // Move to the next line after order details
+                yPosition += e.Graphics.MeasureString(orderDetailsStringBuilder.ToString(), fontDetails).Height + 10;
+
+                // Print Total Price with a separate Font object
+                e.Graphics.DrawString($"Total Price: ₱{totalOrderPrice:N2}", fontTotal, Brushes.Black, xPosition, yPosition);
+            }
+        }
+
+
+
+        private void guna2Button17_Click(object sender, EventArgs e)
+        {
+            if (guna2Panel9.Size == new Size(200, 644))
+            {
+                guna2Panel9.Size = new Size(27, 644);
+                this.Size = new Size(993, 683);
+            }
+            else
+            {
+
+                guna2Panel9.Size = new Size(200, 644); // full panel size
+                this.Size = new Size(1166, 683); // full form size
+            }
+        }
     }
 
 }

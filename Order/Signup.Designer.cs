@@ -48,12 +48,11 @@
             // labelLogin
             // 
             this.labelLogin.AutoSize = true;
-            this.labelLogin.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLogin.Font = new System.Drawing.Font("Courier New", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelLogin.ForeColor = System.Drawing.Color.Blue;
-            this.labelLogin.Location = new System.Drawing.Point(264, 69);
-            this.labelLogin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelLogin.Location = new System.Drawing.Point(396, 106);
             this.labelLogin.Name = "labelLogin";
-            this.labelLogin.Size = new System.Drawing.Size(50, 20);
+            this.labelLogin.Size = new System.Drawing.Size(82, 23);
             this.labelLogin.TabIndex = 2;
             this.labelLogin.Text = "Log in";
             this.labelLogin.Click += new System.EventHandler(this.labelLogin_Click);
@@ -61,24 +60,22 @@
             // labelAbout
             // 
             this.labelAbout.AutoSize = true;
-            this.labelAbout.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAbout.Font = new System.Drawing.Font("Courier New", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAbout.ForeColor = System.Drawing.Color.Blue;
-            this.labelAbout.Location = new System.Drawing.Point(435, 69);
-            this.labelAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAbout.Location = new System.Drawing.Point(652, 106);
             this.labelAbout.Name = "labelAbout";
-            this.labelAbout.Size = new System.Drawing.Size(67, 20);
+            this.labelAbout.Size = new System.Drawing.Size(106, 23);
             this.labelAbout.TabIndex = 3;
             this.labelAbout.Text = "About us";
             // 
             // labelCon
             // 
             this.labelCon.AutoSize = true;
-            this.labelCon.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCon.Font = new System.Drawing.Font("Courier New", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCon.ForeColor = System.Drawing.Color.Blue;
-            this.labelCon.Location = new System.Drawing.Point(343, 69);
-            this.labelCon.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelCon.Location = new System.Drawing.Point(514, 106);
             this.labelCon.Name = "labelCon";
-            this.labelCon.Size = new System.Drawing.Size(61, 20);
+            this.labelCon.Size = new System.Drawing.Size(94, 23);
             this.labelCon.TabIndex = 4;
             this.labelCon.Text = "Contact";
             // 
@@ -88,10 +85,9 @@
             this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Location = new System.Drawing.Point(1, 116);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Location = new System.Drawing.Point(2, 178);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(208, 272);
+            this.panel1.Size = new System.Drawing.Size(310, 416);
             this.panel1.TabIndex = 5;
             // 
             // panel2
@@ -106,44 +102,40 @@
             this.panel2.Controls.Add(this.tboxPass);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.cboxType);
-            this.panel2.Location = new System.Drawing.Point(203, 116);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Location = new System.Drawing.Point(304, 178);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(333, 272);
+            this.panel2.Size = new System.Drawing.Size(498, 416);
             this.panel2.TabIndex = 6;
             // 
             // labelForgot
             // 
             this.labelForgot.AutoSize = true;
-            this.labelForgot.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelForgot.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelForgot.ForeColor = System.Drawing.Color.Blue;
-            this.labelForgot.Location = new System.Drawing.Point(13, 203);
-            this.labelForgot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelForgot.Location = new System.Drawing.Point(20, 312);
             this.labelForgot.Name = "labelForgot";
-            this.labelForgot.Size = new System.Drawing.Size(118, 20);
+            this.labelForgot.Size = new System.Drawing.Size(190, 23);
             this.labelForgot.TabIndex = 3;
             this.labelForgot.Text = "Forgot Password";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(26, 121);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(39, 186);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 20);
+            this.label3.Size = new System.Drawing.Size(118, 23);
             this.label3.TabIndex = 3;
             this.label3.Text = "User Type";
             // 
             // SignButton
             // 
             this.SignButton.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.SignButton.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SignButton.Location = new System.Drawing.Point(168, 159);
-            this.SignButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SignButton.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SignButton.Location = new System.Drawing.Point(252, 245);
             this.SignButton.Name = "SignButton";
-            this.SignButton.Size = new System.Drawing.Size(79, 24);
+            this.SignButton.Size = new System.Drawing.Size(118, 37);
             this.SignButton.TabIndex = 2;
             this.SignButton.Text = "Sign up";
             this.SignButton.UseVisualStyleBackColor = false;
@@ -152,77 +144,73 @@
             // tboxName
             // 
             this.tboxName.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.tboxName.Location = new System.Drawing.Point(118, 39);
-            this.tboxName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tboxName.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tboxName.Location = new System.Drawing.Point(177, 60);
             this.tboxName.Multiline = true;
             this.tboxName.Name = "tboxName";
-            this.tboxName.Size = new System.Drawing.Size(176, 27);
+            this.tboxName.Size = new System.Drawing.Size(262, 39);
             this.tboxName.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(25, 82);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(38, 126);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 20);
+            this.label2.Size = new System.Drawing.Size(106, 23);
             this.label2.TabIndex = 3;
             this.label2.Text = "Password";
             // 
             // tboxPass
             // 
             this.tboxPass.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.tboxPass.Location = new System.Drawing.Point(118, 82);
-            this.tboxPass.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tboxPass.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tboxPass.Location = new System.Drawing.Point(177, 126);
             this.tboxPass.Multiline = true;
             this.tboxPass.Name = "tboxPass";
-            this.tboxPass.Size = new System.Drawing.Size(176, 27);
+            this.tboxPass.Size = new System.Drawing.Size(262, 39);
             this.tboxPass.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Trebuchet MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(26, 39);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(39, 60);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 20);
+            this.label4.Size = new System.Drawing.Size(106, 23);
             this.label4.TabIndex = 3;
             this.label4.Text = "Fullname";
             // 
             // cboxType
             // 
             this.cboxType.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.cboxType.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cboxType.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboxType.FormattingEnabled = true;
             this.cboxType.Items.AddRange(new object[] {
             "Customer",
             "Admin",
             "Seller",
             "Delivery Driver"});
-            this.cboxType.Location = new System.Drawing.Point(118, 121);
-            this.cboxType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboxType.Location = new System.Drawing.Point(177, 186);
             this.cboxType.Name = "cboxType";
-            this.cboxType.Size = new System.Drawing.Size(176, 26);
+            this.cboxType.Size = new System.Drawing.Size(262, 31);
             this.cboxType.TabIndex = 1;
             // 
             // SignupForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(533, 380);
+            this.ClientSize = new System.Drawing.Size(800, 585);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.labelLogin);
             this.Controls.Add(this.labelAbout);
             this.Controls.Add(this.labelCon);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SignupForm";
             this.Text = "Signup";
             this.panel2.ResumeLayout(false);

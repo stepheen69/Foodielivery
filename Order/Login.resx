@@ -742,10 +742,10 @@
   <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="$this.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="guna2PictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAMnFJREFUeF7tnQd0FdUWhlEELHSUDoIgoHQQEKSJFRUILQktkJDQCb1IEem9pCek
+        wgAADsIBFShKgAAAMnFJREFUeF7tnQd0FdUWhlEELHSUDoIgoHQQEKSJFRUILQktkJDQCb1IEem9pCek
         F0IChA7SFKSjka5UpUuRXhOSnHn/f5h7vSEJBkUf77m/tWYlM3Nm5t6Z/Z+99ylzswiCIAiCIAiCIAiC
         IAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAhPjIkTJxYq
         WLCga/ny5b985ZVXugQEBOQxdwnCv5vatWt/WLhw4RMNGzbc1L179wNNmjS5X6BAgVMdOnQobhYRhH8n

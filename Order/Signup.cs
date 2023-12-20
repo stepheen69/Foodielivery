@@ -13,7 +13,7 @@ namespace Order
 {
     public partial class SignupForm : Form
     {
-        private string connectionString = "Data Source=DESKTOP-TILM0PL;Initial Catalog=Final;Integrated Security=True";
+        private string connectionString = "Data Source=DESKTOP-09BJIA6\\SQLEXPRESS;Initial Catalog=Final;Integrated Security=True;";
         public SignupForm()
         {
             InitializeComponent();
